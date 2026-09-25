@@ -1,129 +1,24 @@
 import sys
 import os
 import difflib
-
-# 1. Path Fix for Streamlit Cloud
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.abspath(os.path.join(current_dir, '..'))
-
-# 2. Forcefully adding directories to Python's search list
-sys.path.insert(0, parent_dir)
-sys.path.insert(0, current_dir)
-
-import streamlit as st
-import pickle
 import streamlit as st
 import pickle
 import requests
 from recommender import get_recommendations
+from frontend import render_ui
+
+# 1. Path for Streamlit Cloud
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.abspath(os.path.join(current_dir, '..'))
+
+sys.path.insert(0, parent_dir)
+sys.path.insert(0, current_dir)
 
 # Set page configuration for a wider layout
-st.set_page_config(page_title="Movie Recommender", layout="wide")
+st.set_page_config(page_title="The Movie Matrix", layout="wide")
 
 # Inject Custom CSS for styling the web app
-st.markdown("""
-    <style>
-    /* =========================================
-       1. THE GRID SYSTEM (Responsive Layout)
-       ========================================= */
-    .poster-container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); /* Mobile: 2 posters per row */
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-
-    /* Desktop/Tablet: 5 posters per row */
-    @media (min-width: 768px) {
-        .poster-container {
-            grid-template-columns: repeat(5, 1fr); 
-            gap: 20px;
-        }
-    }
-
-    /* =========================================
-       2. MOVIE CARD STYLING (Hover & Shadows)
-       ========================================= */
-    .movie-card {
-        text-align: center;
-        border-radius: 12px;
-        padding: 6px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        background-color: transparent;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        height: 100%;
-    }
-
-    .movie-card:hover {
-        transform: translateY(-8px); /* Pop effect on hover */
-    }
-
-    .movie-poster {
-        width: 100%;
-        border-radius: 10px; /* Smooth rounded edges */
-        box-shadow: 0 4px 10px rgba(0,0,0,0.25); /* Premium shadow */
-        margin-bottom: 12px;
-        object-fit: cover;
-    }
-
-    .movie-title-card {
-        font-size: clamp(14px, 2vw, 18px); /* Auto-adjusts size based on screen */
-        font-weight: 800;
-        color: #1f2937; /* Premium Dark Gray */
-        line-height: 1.3;
-        letter-spacing: 0.3px;
-        
-        /* The Magic: Keeps all cards equal height & adds '...' for long text */
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        min-height: 42px; /* Reserves space for 2 lines */
-    }
-
-    /* =========================================
-       4. HIDE STREAMLIT'S DEFAULT UI 
-       ========================================= */
-        #MainMenu {display: none !important;}
-        footer {display: none !important;}
-        header {display: none !important;}
-        [data-testid="stHeader"] {display: none !important;}
-        [data-testid="stToolbar"] {display: none !important;}
-
-    /* =========================================
-       5. FOOTER STYLING
-       ========================================= */
-
-    .footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: #f1f3f6;
-        color: #333;
-        font-weight: bold;
-        border-top: 3px solid #E50914; 
-        z-index: 100;
-        text-align: center;
-        padding: 12px; /* normal padding on PC */
-        font-size: 1.1rem;
-    }
-
-    /* =========================================
-       6. MOBILE FIX (Only for mobile)
-       ========================================= */
-    @media (max-width: 768px) {
-        .footer {
-            text-align: left;
-            padding: 12px 90px 12px 20px;
-            font-size: 0.85rem;
-        }
-    }}
-    </style>
-""", unsafe_allow_html=True)
+render_ui()
 
 # Function to fetch movie poster from OMDb API
 @st.cache_data
@@ -136,17 +31,7 @@ def fetch_poster(movie_title):
         return data['Poster']
     else:
         return "https://dummyimage.com/300x450/cccccc/000000.png&text=No+Poster"
-
-# Display the styled Title and Subtitle
-st.markdown(
-    "<div style='text-align: center; font-weight: 800; font-size: clamp(1.2rem, 5vw, 3rem); word-break: keep-all; padding-bottom: 0.2rem; color: #E50914;'>The Movie Matrix 🍿</div>", 
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    "<div style='text-align: center; color: #666; font-size: clamp(0.9rem, 3vw, 1.2rem); margin-bottom: 2rem;'>Discover your next favorite movie based on your tastes!</div>", 
-    unsafe_allow_html=True
-)
+    
 
 # Load the saved pickle data files
 movies_file_path = os.path.join(current_dir, 'movies.pkl')
@@ -269,9 +154,9 @@ else:
     st.markdown(cards_html, unsafe_allow_html=True)
 
 # 5. FIXED GENRE ROWS
-
 def display_movie_row(section_title, movies_list):
-    st.markdown(f"<div style='text-align: left; color: #1f2937; font-weight: 800; padding-top: 35px; padding-bottom: 10px; font-size: clamp(1.1rem, 2.5vw, 1.3rem);'>{section_title}</div>", unsafe_allow_html=True)
+    # CSS class call ki hai
+    st.markdown(f'<div class="section-title">{section_title}</div>', unsafe_allow_html=True)
     
     row_html = "<div class='poster-container'>"
     for movie in movies_list:
@@ -291,6 +176,3 @@ thriller_movies = ["Shutter Island", "Memento", "The Prestige", "Gone Girl", "Pr
 display_movie_row("🚀 Sci-Fi & Space Adventures", scifi_movies)
 display_movie_row("💖 Epic Romance", romance_movies)
 display_movie_row("🤯 Mind-Bending Thrillers", thriller_movies)
-
-# 6. Footer 
-st.markdown("<div class='footer'>Developed with ❤️ by Lokendra Kushwaha</div>", unsafe_allow_html=True)
