@@ -61,7 +61,7 @@ def render_ui():
             .block-container {
                 padding-top: 140px !important; 
                 padding-bottom: 100px !important;
-                max-width: 1200px !important;
+                max-width: 95% !important;
                 transition: padding 0.3s ease-in-out;
             }
 
