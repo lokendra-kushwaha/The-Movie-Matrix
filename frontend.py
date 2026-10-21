@@ -195,7 +195,7 @@ def render_ui():
                 padding-bottom: 15px !important;
                 font-size: clamp(1.2rem, 3vw, 1.4rem) !important;
                 letter-spacing: 0.5px !important;
-                border-bottom: 2px solid var(--border-subtle) !important; /* Premium look ke liye ek halki line */
+                border-bottom: 2px solid var(--border-subtle) !important;
                 margin-bottom: 20px !important;
             }
 
@@ -286,23 +286,23 @@ def render_ui():
             
             @media (max-width: 768px) {
                 .block-container {
-                    padding-top: 90px !important; /* Mobile me top space kam kiya */
+                    padding-top: 90px !important; 
                     padding-bottom: 70px !important;
                     padding-left: 10px !important;
                     padding-right: 10px !important;
                 }
                 
                 .adaptive-header {
-                    padding: 10px 5px 8px 5px !important; /* Mobile me padding ekdum compact ki */
+                    padding: 10px 5px 8px 5px !important; 
                 }
 
                 .adaptive-title {
-                    font-size: clamp(20px, 6vw, 24px) !important; /* Mobile me Title size adjust kiya */
+                    font-size: clamp(20px, 6vw, 24px) !important; 
                     padding-bottom: 2px !important;
                 }
 
                 .adaptive-subtitle {
-                    font-size: clamp(11px, 3.5vw, 13px) !important; /* Mobile me subtitle ek line me lane ke liye adjust kiya */
+                    font-size: clamp(11px, 3.5vw, 13px) !important; 
                     line-height: 1.2 !important;
                 }
                 

@@ -118,5 +118,3 @@ if __name__ == "__main__":
     fake_dirty_text = 'Hello! "Avatar" is an epic, sci-fi movie.'
     print("\nBefore Cleaning:", fake_dirty_text)
     print("After Cleaning:", remove_punctuation(fake_dirty_text))
-
-    

@@ -155,7 +155,6 @@ else:
 
 # 5. FIXED GENRE ROWS
 def display_movie_row(section_title, movies_list):
-    # CSS class call ki hai
     st.markdown(f'<div class="section-title">{section_title}</div>', unsafe_allow_html=True)
     
     row_html = "<div class='poster-container'>"
